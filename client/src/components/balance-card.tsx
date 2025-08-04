@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/lib/auth";
 import { formatCurrency } from "@/lib/constants";
-import { Wallet, Plus, Minus, Send, QrCode, Users } from "lucide-react";
+import { Wallet, Plus, Minus, Send, Info, ArrowUpCircle, ArrowDownCircle, UserPlus } from "lucide-react";
 
 interface BalanceCardProps {
   onShowModal: (type: string) => void;
@@ -65,35 +65,51 @@ export default function BalanceCard({ onShowModal }: BalanceCardProps) {
           </Button>
         </div>
 
-        {/* Quick Actions */}
+        {/* Panduan Penggunaan */}
         <div className="bg-white rounded-xl p-4 border border-gray-200">
-          <h3 className="font-semibold text-gray-800 mb-4">Aksi Cepat</h3>
-          <div className="space-y-3">
-            <Button
-              variant="ghost"
-              className="w-full flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg justify-start"
-            >
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <QrCode className="text-blue-600" size={16} />
+          <div className="flex items-center space-x-2 mb-4">
+            <Info className="text-blue-600" size={20} />
+            <h3 className="font-semibold text-gray-800">Panduan Penggunaan</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg">
+              <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <ArrowUpCircle className="text-orange-600" size={16} />
               </div>
-              <div className="flex-1 text-left">
-                <p className="font-medium text-gray-800">Scan QR Code</p>
-                <p className="text-sm text-gray-500">Bayar dengan scan</p>
+              <div className="flex-1">
+                <p className="font-medium text-orange-800 mb-1">Top Up</p>
+                <p className="text-sm text-orange-700 leading-relaxed">
+                  Isi saldo BYFORT Anda melalui transfer bank. Minimal Rp 12.000, maksimal Rp 10.000.000. 
+                  Upload bukti transfer dan tunggu persetujuan admin untuk saldo masuk ke akun.
+                </p>
               </div>
-            </Button>
+            </div>
             
-            <Button
-              variant="ghost"
-              className="w-full flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg justify-start"
-            >
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                <Users className="text-green-600" size={16} />
+            <div className="flex items-start space-x-3 p-3 bg-red-50 rounded-lg">
+              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <ArrowDownCircle className="text-red-600" size={16} />
               </div>
-              <div className="flex-1 text-left">
-                <p className="font-medium text-gray-800">Split Bill</p>
-                <p className="text-sm text-gray-500">Patungan dengan teman</p>
+              <div className="flex-1">
+                <p className="font-medium text-red-800 mb-1">Menarik Saldo</p>
+                <p className="text-sm text-red-700 leading-relaxed">
+                  Tarik saldo BYFORT ke rekening bank Anda. Minimal Rp 55.000, maksimal Rp 10.000.000. 
+                  Masukkan data rekening tujuan dan tunggu persetujuan admin untuk pencairan.
+                </p>
               </div>
-            </Button>
+            </div>
+            
+            <div className="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
+              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <UserPlus className="text-green-600" size={16} />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-green-800 mb-1">Kirim Saldo</p>
+                <p className="text-sm text-green-700 leading-relaxed">
+                  Kirim saldo ke sesama pengguna BYFORT dengan nomor HP. Minimal Rp 10.000. 
+                  Transaksi langsung berhasil tanpa persetujuan admin. Potongan admin Rp 1.200 per transaksi.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

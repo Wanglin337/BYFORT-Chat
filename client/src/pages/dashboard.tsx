@@ -7,12 +7,14 @@ import TransactionForms from "@/components/transaction-forms";
 import TransactionHistory from "@/components/transaction-history";
 import ChatInterface from "@/components/chat-interface";
 import NotificationToast from "@/components/notification-toast";
+import ProfileModal from "@/components/profile-modals";
 
 type TabType = "chat" | "balance" | "history" | "settings";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<TabType>("chat");
   const [showModal, setShowModal] = useState<string>("");
+  const [showProfileModal, setShowProfileModal] = useState<"edit" | "notifications" | "security" | null>(null);
   const { user, logout } = useAuthStore();
 
   const tabs = [
@@ -79,7 +81,10 @@ export default function Dashboard() {
                   <p className="text-sm text-gray-500">{user?.phoneNumber}</p>
                 </div>
               </div>
-              <Button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800">
+              <Button 
+                onClick={() => setShowProfileModal("edit")}
+                className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800"
+              >
                 Edit Profil
               </Button>
             </div>
@@ -87,6 +92,7 @@ export default function Dashboard() {
             <div className="bg-white rounded-xl border border-gray-200">
               <Button
                 variant="ghost"
+                onClick={() => setShowProfileModal("security")}
                 className="w-full flex items-center justify-between p-4 hover:bg-gray-50"
               >
                 <div className="flex items-center space-x-3">
@@ -100,6 +106,7 @@ export default function Dashboard() {
               
               <Button
                 variant="ghost"
+                onClick={() => setShowProfileModal("notifications")}
                 className="w-full flex items-center justify-between p-4 hover:bg-gray-50"
               >
                 <div className="flex items-center space-x-3">
@@ -158,6 +165,14 @@ export default function Dashboard() {
       )}
 
       <NotificationToast />
+
+      {/* Profile Modal */}
+      {showProfileModal && (
+        <ProfileModal
+          type={showProfileModal}
+          onClose={() => setShowProfileModal(null)}
+        />
+      )}
     </div>
   );
 }

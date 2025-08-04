@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Search, MoreVertical } from "lucide-react";
+import { Send, Search, MoreVertical, Plus, UserPlus, Users } from "lucide-react";
+import ChatModal from "@/components/chat-modals";
 
 // Mock chat data for demonstration
 const mockChats = [
@@ -42,6 +43,8 @@ const mockChats = [
 export default function ChatInterface() {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [showChatModal, setShowChatModal] = useState<"add-contact" | "create-group" | null>(null);
+  const [showChatOptions, setShowChatOptions] = useState(false);
 
   const handleSendMessage = () => {
     if (message.trim()) {
@@ -136,15 +139,58 @@ export default function ChatInterface() {
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col relative">
       {/* Search Bar */}
       <div className="p-4 bg-white border-b border-gray-200">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-          <Input
-            placeholder="Cari chat..."
-            className="pl-10"
-          />
+        <div className="flex items-center space-x-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+            <Input
+              placeholder="Cari chat..."
+              className="pl-10"
+            />
+          </div>
+          
+          {/* Chat Actions Button */}
+          <div className="relative">
+            <Button
+              onClick={() => setShowChatOptions(!showChatOptions)}
+              className="whatsapp-green hover:bg-green-700 text-white w-10 h-10 rounded-full p-0"
+            >
+              <Plus size={18} />
+            </Button>
+            
+            {/* Dropdown Options */}
+            {showChatOptions && (
+              <div className="absolute right-0 top-12 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-48">
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setShowChatModal("add-contact");
+                    setShowChatOptions(false);
+                  }}
+                  className="w-full flex items-center space-x-3 p-3 hover:bg-gray-50 justify-start rounded-none"
+                >
+                  <UserPlus className="text-blue-600" size={16} />
+                  <span className="text-gray-800">Tambah Kontak</span>
+                </Button>
+                
+                <hr className="border-gray-200" />
+                
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setShowChatModal("create-group");
+                    setShowChatOptions(false);
+                  }}
+                  className="w-full flex items-center space-x-3 p-3 hover:bg-gray-50 justify-start rounded-none"
+                >
+                  <Users className="text-green-600" size={16} />
+                  <span className="text-gray-800">Buat Grup</span>
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -177,6 +223,22 @@ export default function ChatInterface() {
           </Button>
         ))}
       </div>
+
+      {/* Chat Modal */}
+      {showChatModal && (
+        <ChatModal
+          type={showChatModal}
+          onClose={() => setShowChatModal(null)}
+        />
+      )}
+
+      {/* Overlay to close dropdown */}
+      {showChatOptions && (
+        <div 
+          className="fixed inset-0 z-5"
+          onClick={() => setShowChatOptions(false)}
+        />
+      )}
     </div>
   );
 }
